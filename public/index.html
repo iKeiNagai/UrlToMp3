@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Url To Mp3</title>
+</head>
+<body>
+    <h1>URL TO MP3</h1>
+    
+    <form id="convertForm">
+        <input type="text" id="url" placeholder="Enter Youtube Url" required>
+        <button type="submit">Convert</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('convertForm').addEventListener('submit', async (e) =>{
+            e.preventDefault();
+
+            const url = document.getElementById('url').value;
+
+            // send url to server
+            const response = await fetch('/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+        })
+    </script>
+</body>
+</html>
