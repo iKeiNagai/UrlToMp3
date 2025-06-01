@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>URL TO MP3</h1>
-    
+
     <form id="convertForm">
         <input type="text" id="url" placeholder="Enter Youtube Url" required>
         <button type="submit">Convert</button>
@@ -28,6 +28,15 @@
                 },
                 body: JSON.stringify({ url })
             });
+
+            const data = await response.json();
+            const resultDiv = document.getElementById('result');
+
+            if(data.error) {
+                resultDiv.textContent = 'Error: ' + data.error;;
+            } else {
+                resultDiv.textContent = data.title;
+            }
         })
     </script>
 </body>
