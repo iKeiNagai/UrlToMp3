@@ -22,6 +22,19 @@ async function getVideoData(url) {
     }
 }
 
+async function convertToMp3(url, outputPath){
+    try{
+        await youtubedl(url, {
+            output: outputPath,
+            extractAudio: true,
+            audioFormat: 'mp3',
+            audioQuality: '0'
+        });
+    }catch (error) {
+        console.error('Error converting video to MP3:', error);
+        throw error;
+    }
+}
 
 app.post('/convert', async (req, res) => {
     const { url } = req.body;
@@ -29,13 +42,14 @@ app.post('/convert', async (req, res) => {
 
     try{
         const info = await getVideoData(url);
-        console.log(info.title);
+        const title = info.title;
+        console.log(title);
         
-        const outputPath = path.join(__dirname, 'download', `${info.title}.mp3`);
+        const outputPath = path.join(__dirname, 'download', `${title}.mp3`);
         console.log(`Output path: ${outputPath}`);
 
-
-        res.json({title: info.title});
+        await convertToMp3(url, outputPath);
+        res.json({title: title});
     }catch (e){
         console.error('Error processing video:', e);
         res.status(500).json({ error: 'Failed to process video' });
