@@ -13,6 +13,7 @@
         <button type="submit">Convert</button>
     </form>
     <div id="result"></div>
+    <div id="download-btn"></div>
 
     <script>
         document.getElementById('convertForm').addEventListener('submit', async (e) =>{
@@ -31,13 +32,37 @@
 
             const data = await response.json();
             const resultDiv = document.getElementById('result');
+            const downloadBtnDiv = document.getElementById('download-btn');
 
             if(data.error) {
-                resultDiv.textContent = 'Error: ' + data.error;;
+                resultDiv.textContent = 'Error: ' + data.error;
             } else {
                 resultDiv.textContent = data.title;
+                downloadBtnDiv.innerHTML = '<button id="downloadBtn">Download</button>'
             }
         })
+
+        document.getElementById('download-btn').addEventListener('click', async () => {
+            const url = document.getElementById('url').value;
+
+            // send url to server for download
+            const response = await fetch('/save-song', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            });
+
+            const data = await response.json();
+            const downloadBtnDiv = document.getElementById('download-btn');
+
+            if(data.error) {
+                downloadBtnDiv.textContent = 'Error: ' + data.error;
+            } else {
+                window.location.href = data.downloadurl; //get to dowload:filename    
+            }
+        });
     </script>
 </body>
 </html>
