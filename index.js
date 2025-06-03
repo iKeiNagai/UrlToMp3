@@ -1,3 +1,5 @@
+require('dotenv').config();
+require('./config/db');
 const express = require('express');
 const youtubedl = require('youtube-dl-exec');
 const path = require('path');
