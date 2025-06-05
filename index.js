@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit');
 const slowDown = require('express-slow-down');
 
 const Song = require('./models/songs');
+const { type } = require('os');
 
 const app = express();
 
@@ -54,7 +55,11 @@ async function convertToMp3(url, outputPath){
 // convert to mp3 endpoint
 app.post('/convert', async (req, res) => {
     const { url } = req.body;
-    //console.log(`Received URL: ${url}`);
+
+    // validate url
+    if(!url || !url.startsWith('https://www.youtube.com/watch') && !url.startsWith('https://youtu.be/')) {
+        return res.status(400).json({ error: 'Invalid YouTube URL' });
+    }
 
     try{
         const info = await getVideoData(url);
