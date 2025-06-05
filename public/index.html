@@ -44,6 +44,7 @@
 
         document.getElementById('download-btn').addEventListener('click', async () => {
             const url = document.getElementById('url').value;
+            const title = document.getElementById('result').textContent;
 
             // send url to server for download
             const response = await fetch('/save-song', {
@@ -51,7 +52,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ url })
+                body: JSON.stringify({ url, title })
             });
 
             const data = await response.json();
@@ -60,7 +61,8 @@
             if(data.error) {
                 downloadBtnDiv.textContent = 'Error: ' + data.error;
             } else {
-                window.location.href = data.downloadurl; //get to dowload:filename    
+                window.location.href = data.downloadurl; //get to dowload:filename 
+                downloadBtnDiv.textContent = 'Download started...';  
             }
         });
     </script>

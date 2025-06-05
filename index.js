@@ -4,12 +4,10 @@ require('./config/db');
 const express = require('express');
 const youtubedl = require('youtube-dl-exec');
 const path = require('path');
+const fs = require('fs');
 const sanitize = require('sanitize-filename');
 const rateLimit = require('express-rate-limit');
-const slowDown = require('express-slow-down');
-
 const Song = require('./models/songs');
-const { type } = require('os');
 
 const app = express();
 
@@ -52,6 +50,16 @@ async function convertToMp3(url, outputPath){
     }
 }
 
+function deleteFile(filePath) {
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error('Error deleting file:', err);
+        } else {
+            console.log(`File deleted: ${filePath}`);
+        }
+    });
+}
+
 // convert to mp3 endpoint
 app.post('/convert', async (req, res) => {
     const { url } = req.body;
@@ -79,12 +87,11 @@ app.post('/convert', async (req, res) => {
 
 //save song endpoint
 app.post('/save-song', async (req,res) => {
-    const { url } = req.body;
+    const { url, title } = req.body;
     
     try{
         const info = await getVideoData(url);
         const videoId = info.id;
-        const title = sanitize(info.title);
         const duration = info.duration;
 
         //save song to db
@@ -100,6 +107,13 @@ app.post('/save-song', async (req,res) => {
             downloadurl : `/download/${title}.mp3`,
         })
     } catch (e){
+
+        //duplicate key error
+        if (e.code === 11000) {
+            deleteFile(path.join(__dirname, 'download', `${title}.mp3`));
+            return res.status(409).json({ error: 'Duplicate song entry' });
+        }
+
         console.error('Error saving song:', e);
         res.status(500).json({ error: 'Failed to save song' });
     }
@@ -115,6 +129,8 @@ app.get('/download/:filename', (req, res) => {
             console.error('Error downloading file:', err);
             res.status(500).send('Error downloading file');
         }
+    
+        deleteFile(filePath);
     });
 });
 
