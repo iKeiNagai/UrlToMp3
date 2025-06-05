@@ -4,12 +4,23 @@ require('./config/db');
 const express = require('express');
 const youtubedl = require('youtube-dl-exec');
 const path = require('path');
+const sanitize = require('sanitize-filename');
+const rateLimit = require('express-rate-limit');
+const slowDown = require('express-slow-down');
+
 const Song = require('./models/songs');
 
 const app = express();
 
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 5, // Limit each IP to 5 requests per windowMs
+    message: 'Slow down! Too many requests'
+});
+
 app.use(express.static('public'));
 app.use(express.json());
+app.use(limiter);
 
 async function getVideoData(url) {
     try{
@@ -47,12 +58,12 @@ app.post('/convert', async (req, res) => {
 
     try{
         const info = await getVideoData(url);
-        const title = info.title;
+        const title = sanitize(info.title);
         console.log(title);
         
         const outputPath = path.join(__dirname, 'download', `${title}.mp3`);
 
-        //await convertToMp3(url, outputPath);
+        await convertToMp3(url, outputPath);
         res.json({title: title});
     }catch (e){
         console.error('Error processing video:', e);
@@ -68,7 +79,7 @@ app.post('/save-song', async (req,res) => {
     try{
         const info = await getVideoData(url);
         const videoId = info.id;
-        const title = info.title;
+        const title = sanitize(info.title);
         const duration = info.duration;
 
         //save song to db
