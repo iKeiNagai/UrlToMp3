@@ -6,6 +6,7 @@ export default function UrlToMp3() {
     const [title, setTitle] = useState('');
     const [error, setError] = useState('');
     const [downloadStart, setDownloadStart] = useState('');
+    const [loading, setLoading] = useState(false);
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     const handleConvert = async (e) => {
@@ -13,6 +14,7 @@ export default function UrlToMp3() {
         setError('');
         setTitle('');
         setDownloadStart('');
+        setLoading(true);
 
         try {
 
@@ -25,6 +27,7 @@ export default function UrlToMp3() {
             });
 
             const data = await response.json();
+            setLoading(false);
 
             if (data.error) {
                 setError(data.error);
@@ -37,6 +40,8 @@ export default function UrlToMp3() {
     }
 
     const handleDownload = async () => {
+        setLoading(true);
+
         try {
             const response = await fetch('/save-song', {
                 method: 'POST',
@@ -47,12 +52,13 @@ export default function UrlToMp3() {
             });
 
             const data = await response.json();
+            setLoading(false);
 
             if (data.error) {
                 setError(data.error);
             } else {
                 window.location.href = `${backendUrl}${data.downloadurl}`;
-                setDownloadStart('Download started...');
+                setDownloadStart('Download completed...');
             }
 
         }catch (err) {
@@ -78,7 +84,8 @@ export default function UrlToMp3() {
             {title && <p>Title: {title}</p>}
 
             {error && <p>{error}</p>}
-            {!error && title && !downloadStart && (
+            {loading && <p>Loading...</p>}
+            {!error && title && !downloadStart && !loading && (
                 <button onClick={handleDownload}>
                     Download
                 </button>
