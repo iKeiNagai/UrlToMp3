@@ -7,6 +7,7 @@ const routes = require('./routes/routes');
 
 const app = express();
 
+app.set('trust proxy', 1);
 app.use(express.static('public'));
 app.use(express.json());
 app.use(limiter);
