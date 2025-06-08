@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function UrlToMp3() {
 
@@ -8,6 +8,24 @@ export default function UrlToMp3() {
     const [downloadStart, setDownloadStart] = useState('');
     const [loading, setLoading] = useState(false);
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+    //load from localStorage
+    useEffect(() => {
+        const savedUrl = localStorage.getItem('url');
+        const savedTitle = localStorage.getItem('title');
+        const savedError = localStorage.getItem('error');
+
+        if (savedUrl) { setUrl(savedUrl); }
+        if (savedTitle) { setTitle(savedTitle); }
+        if (savedError) { setError(savedError); }
+    }, []);
+
+    //save to localStorage
+    useEffect(() => {
+        localStorage.setItem('url', url);
+        localStorage.setItem('title', title);
+        localStorage.setItem('error', error);
+    }, [url, title, error]);
 
     const handleConvert = async (e) => {
         e.preventDefault();
