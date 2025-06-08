@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function UrlToMp3() {
 
@@ -18,7 +18,7 @@ export default function UrlToMp3() {
 
         try {
 
-            const response = await fetch('/convert', {
+            const response = await fetch(`${backendUrl}/convert`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export default function UrlToMp3() {
         setLoading(true);
 
         try {
-            const response = await fetch('/save-song', {
+            const response = await fetch(`${backendUrl}/save-song`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
