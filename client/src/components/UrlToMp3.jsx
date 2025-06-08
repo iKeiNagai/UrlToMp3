@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 
-export default function UrlToMp3() {
+export default function UrlToMp3({ setLoading, loading }) {
 
     const [url, setUrl] = useState('');
     const [title, setTitle] = useState('');
     const [error, setError] = useState('');
     const [downloadStart, setDownloadStart] = useState('');
-    const [loading, setLoading] = useState(false);
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     //load from localStorage
@@ -45,7 +44,6 @@ export default function UrlToMp3() {
             });
 
             const data = await response.json();
-            setLoading(false);
 
             if (data.error) {
                 setError(data.error);
@@ -54,6 +52,8 @@ export default function UrlToMp3() {
             }
         }catch (err) {
             setError('Cannot connect to the server');
+        }finally {
+            setLoading(false);
         }
     }
 
@@ -70,7 +70,6 @@ export default function UrlToMp3() {
             });
 
             const data = await response.json();
-            setLoading(false);
 
             if (data.error) {
                 setError(data.error);
@@ -81,6 +80,8 @@ export default function UrlToMp3() {
 
         }catch (err) {
             setError('Cannot connect to the server');
+        }finally {
+            setLoading(false);
         }
     }
 
