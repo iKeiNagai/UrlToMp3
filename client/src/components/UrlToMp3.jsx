@@ -27,6 +27,7 @@ export default function UrlToMp3({ setLoading, loading }) {
         localStorage.setItem('error', error);
     }, [url, title, error]);
 
+    //handle convert
     const handleConvert = async (e) => {
         e.preventDefault();
         setError('');
@@ -58,6 +59,7 @@ export default function UrlToMp3({ setLoading, loading }) {
         }
     }
 
+    //handle download
     const handleDownload = async () => {
         setLoading(true);
 
@@ -86,6 +88,22 @@ export default function UrlToMp3({ setLoading, loading }) {
         }
     }
 
+    //handle reset
+    const handleReset = (e) => {
+        if(loading) {
+            e.preventDefault();
+            return;
+        }
+
+        setUrl('');
+        setTitle('');
+        setError('');
+        setDownloadStart('');
+        localStorage.removeItem('url');
+        localStorage.removeItem('title');
+        localStorage.removeItem('error');
+    }
+
     return (
         <div className='container'>
             <h1>Youtube Url To Mp3</h1>
@@ -99,6 +117,7 @@ export default function UrlToMp3({ setLoading, loading }) {
                     required
                 />
                 <button type='submit' className='submit-button'>Convert</button>
+                <button type='button' onClick={handleReset} className='reset-button'>Reset</button>
             </form>
 
             <div className='box-result'>

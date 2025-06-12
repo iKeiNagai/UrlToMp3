@@ -50,6 +50,16 @@
             transform: scale(1.05);
         }
     }
+
+    .reset-button{
+        margin-left: 5px;
+        background-color: rgb(228, 36, 36);
+        @extend .submit-button;
+
+        &:hover {
+            background-color: darken(red, 10%);
+        }
+    }
 }
 
 .box-result{
