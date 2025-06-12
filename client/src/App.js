@@ -3,6 +3,7 @@ import AllSongs from "./components/AllSongs";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
+import './styles/app.scss';
 
 function App() {
   const [loading, setLoading] = useState(false);

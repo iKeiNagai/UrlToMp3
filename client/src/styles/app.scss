@@ -1,0 +1,13 @@
+$primary-color: #e2dfee;
+$font-hover-color: rgb(100, 16, 173);
+$font-color: rgb(139, 38, 233);
+$font-family: 'couriernew', monospace;
+$font-size: 18px;
+$url-font-size: 16px;
+
+html, body {
+    background-color: $primary-color;
+    margin: 0;
+    font-family: $font-family;
+    margin: 30px;
+}

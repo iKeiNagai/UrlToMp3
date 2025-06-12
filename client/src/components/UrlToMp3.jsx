@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import '../styles/urltomp3.scss';
 
 export default function UrlToMp3({ setLoading, loading }) {
 
@@ -86,10 +87,10 @@ export default function UrlToMp3({ setLoading, loading }) {
     }
 
     return (
-        <div>
+        <div className='container'>
             <h1>Youtube Url To Mp3</h1>
 
-            <form onSubmit={handleConvert}>
+            <form onSubmit={handleConvert} className='url-form'>
                 <input
                     type="text"
                     placeholder="Enter YouTube URL"
@@ -97,20 +98,26 @@ export default function UrlToMp3({ setLoading, loading }) {
                     onChange={(e) => setUrl(e.target.value)}
                     required
                 />
-                <button type='submit'>Convert</button>
+                <button type='submit' className='submit-button'>Convert</button>
             </form>
 
-            {title && <p>Title: {title}</p>}
+            <div className='box-result'>
+                {title && <p>{title}</p>}
 
-            {error && <p>{error}</p>}
-            {loading && <p>Loading...</p>}
-            {!error && title && !downloadStart && !loading && (
-                <button onClick={handleDownload}>
-                    Download
-                </button>
-            )}
+                {error && <p>{error}</p>}
+                {loading && <p>Loading...</p>}
+                
 
-            {downloadStart && <p>{downloadStart}</p>}
+                {!error && title && !downloadStart && !loading && (
+                    <button onClick={handleDownload}
+                        className='download-button'>
+                        Download
+                    </button>
+                )}
+
+                {downloadStart && <p>{downloadStart}</p>}
+                
+            </div>
         </div>
     );
 }
