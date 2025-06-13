@@ -1,4 +1,3 @@
-const express = require('express');
 const router = require('express').Router();
 const controllers = require('../controllers');
 
@@ -10,5 +9,8 @@ router.post('/save-song', controllers.saveSong);
 
 // download endpoint
 router.get('/download/:filename', controllers.download);
+
+// get all songs endpoint
+router.get('/all-songs', controllers.getAllSongs);
 
 module.exports = router;
