@@ -1,24 +1,33 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
+import ReactPaginate from 'react-paginate';
 
 export default function AllSongs(){
     const[songs, setSongs] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
+    const [page, setPage] = useState(1);
+    const [totalSongs, setTotalSongs] = useState(0);
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
-        fetch(`${backendUrl}/all-songs`)
+        fetch(`${backendUrl}/all-songs?page=${page}`)
             .then(response => response.json())
-            .then(data => setSongs(data))
+            .then(data => {
+                setSongs(data.songs);
+                setPageCount(data.totalPages);
+                setTotalSongs(data.totalSongs);
+            })
             .catch(error => {
                 console.error('Error all-songs:', error);
             });
-    }, []);
+    }, [page]);
 
 
     return (
         <div>
-             <h1>Downloaded Songs</h1>
-
-            <table>
+            <h1>Downloaded Songs</h1>
+            
+            <p>Total Songs: {totalSongs}</p>
+            <table> 
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -38,7 +47,16 @@ export default function AllSongs(){
                     ))}
                 </tbody>
             </table>
-
+            
+            <ReactPaginate
+                breakLabel="..."
+                nextLabel="next >"
+                onPageChange={(e) => setPage(e.selected + 1)}
+                pageRangeDisplayed={3}
+                pageCount={pageCount} 
+                previousLabel="< previous"
+                renderOnZeroPageCount={null}
+            />
         </div>
     )
 
