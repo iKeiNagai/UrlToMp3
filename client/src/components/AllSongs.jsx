@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import ReactPaginate from 'react-paginate';
+import '../styles/allsongs.scss';
 
 export default function AllSongs(){
     const[songs, setSongs] = useState([]);
@@ -56,6 +57,8 @@ export default function AllSongs(){
                 pageCount={pageCount} 
                 previousLabel="< previous"
                 renderOnZeroPageCount={null}
+                containerClassName="pagination"
+                activeClassName="active"
             />
         </div>
     )

@@ -1,0 +1,28 @@
+@use 'app' as *;
+
+.pagination{
+    display:flex;
+    list-style: none;
+    gap: 10px;
+    justify-content: center;
+    padding: 16px;
+
+    li{
+        border-radius: 5px;
+        border: 1px solid $font-color;
+
+        a{
+            display: inline-block;
+            padding: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        &.active{
+            background-color: rgb(196, 172, 218);
+        }
+        &:hover{
+            background-color: $font-hover-color;
+        }
+    }
+}
