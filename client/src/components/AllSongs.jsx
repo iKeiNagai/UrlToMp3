@@ -7,10 +7,12 @@ export default function AllSongs(){
     const [pageCount, setPageCount] = useState(1);
     const [page, setPage] = useState(1);
     const [totalSongs, setTotalSongs] = useState(0);
+    const [sortBy, setSortBy] = useState('downloadedAt');
+    const [sortOrder, setSortOrder] = useState('desc');
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
-        fetch(`${backendUrl}/all-songs?page=${page}`)
+        fetch(`${backendUrl}/all-songs?page=${page}&sortBy=${sortBy}&sortOrder=${sortOrder}`)
             .then(response => response.json())
             .then(data => {
                 setSongs(data.songs);
@@ -20,7 +22,7 @@ export default function AllSongs(){
             .catch(error => {
                 console.error('Error all-songs:', error);
             });
-    }, [page]);
+    }, [page,sortBy, sortOrder]);
 
 
     return (
@@ -28,13 +30,24 @@ export default function AllSongs(){
             <h1>Downloaded Songs</h1>
             
             <p>Total Songs: {totalSongs}</p>
+            <div>
+                <label>Sort by:</label>
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                    <option value="downloadedAt">Date</option>
+                    <option value="duration">Duration</option>
+                </select>
+
+                <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                    {sortOrder.toUpperCase()}
+                </button>
+            </div>
             <table> 
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Title</th>
-                        <th>duration</th>
-                        <th>downloadedAt</th>
+                        <th>Duration</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>

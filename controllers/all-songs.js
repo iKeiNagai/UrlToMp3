@@ -3,20 +3,24 @@ const Song = require('../models/songs');
 module.exports = async (req, res) => {
     const page = parseInt(req.query.page);
     const limit = parseInt(20);
-    console.log(page, limit);
+    const sortBy = req.query.sortBy;
+    const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1; //1 for asc,-1 for desc
+
+    console.log(sortBy, sortOrder);
+    //console.log(page, limit);
 
     const skipOver = (page - 1) * limit;
-    console.log('skipOver:', skipOver);
+    //console.log('skipOver:', skipOver);
 
     try {
         const songs = await Song.find()
-            .sort({downloadedAt: -1 })
+            .sort({ [sortBy]: sortOrder })
             .skip(skipOver)
             .limit(limit);
 
 
         const total = await Song.countDocuments();
-        console.log('Total songs:', total);
+        //console.log('Total songs:', total);
 
         res.json({
             totalPages: Math.ceil(total / limit), //needed by react-paginate
