@@ -5,7 +5,7 @@ const express = require('express');
 const limiter = require('./middleware/rateLimiter');
 const routes = require('./routes/routes');
 const cors = require('cors');
-
+const scheduledCleanUp = require('./cron-jobs/scheduledCleanUp')
 const app = express();
 
 app.use(cors());
@@ -14,5 +14,7 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(limiter);
 app.use(routes);
+
+scheduledCleanUp();
 
 module.exports = app;
