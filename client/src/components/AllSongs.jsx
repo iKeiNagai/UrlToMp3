@@ -4,15 +4,24 @@ import '../styles/allsongs.scss';
 
 export default function AllSongs(){
     const[songs, setSongs] = useState([]);
+    const [totalSongs, setTotalSongs] = useState(0);
+
+    //pagination
     const [pageCount, setPageCount] = useState(1);
     const [page, setPage] = useState(1);
-    const [totalSongs, setTotalSongs] = useState(0);
+
+    //sorting
     const [sortBy, setSortBy] = useState('downloadedAt');
     const [sortOrder, setSortOrder] = useState('desc');
+
+    //filtering
+    const [inputFilter, setInputFilter] = useState('');
+    const [filter, setFilter] = useState('');
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+    //load songs from backend
     useEffect(() => {
-        fetch(`${backendUrl}/all-songs?page=${page}&sortBy=${sortBy}&sortOrder=${sortOrder}`)
+        fetch(`${backendUrl}/all-songs?page=${page}&sortBy=${sortBy}&sortOrder=${sortOrder}&filter=${encodeURIComponent(filter)}`)
             .then(response => response.json())
             .then(data => {
                 setSongs(data.songs);
@@ -22,14 +31,32 @@ export default function AllSongs(){
             .catch(error => {
                 console.error('Error all-songs:', error);
             });
-    }, [page,sortBy, sortOrder]);
+    }, [page,sortBy, sortOrder, filter]);
+    
+    //delay call to server for filter input
+    useEffect(() => {
+        const debounce = setTimeout(() => {
+            setPage(1);
+            setFilter(inputFilter);
+        }, 500);
 
+        return () => clearTimeout(debounce);
+    }, [inputFilter]);
 
     return (
         <div>
             <h1>Downloaded Songs</h1>
-            
             <p>Total Songs: {totalSongs}</p>
+            
+            <input
+                type="text"
+                placeholder="Filter by title"
+                value={inputFilter}
+                onChange={(e) => {
+                    setInputFilter(e.target.value);
+                }}
+            />
+                
             <div>
                 <label>Sort by:</label>
                 <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
@@ -72,6 +99,7 @@ export default function AllSongs(){
                 renderOnZeroPageCount={null}
                 containerClassName="pagination"
                 activeClassName="active"
+                forcePage={page - 1} //rerender active style when filtering
             />
         </div>
     )
