@@ -83,7 +83,10 @@ export default function AllSongs(){
                     <tbody>
                         {songs.map(song => (
                             <tr key={song._id}>
-                                <td>{song.videoId}</td>
+                                <td><a href={`https://www.youtube.com/watch?v=${song.videoId}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer">
+                                {song.videoId}</a></td>
                                 <td>{song.title}</td>
                                 <td>{Math.floor(song.duration / 60)}:{(song.duration % 60).toString().padStart(2, '0')}</td>
                                 <td>{new Date(song.downloadedAt).toLocaleString()}</td>
