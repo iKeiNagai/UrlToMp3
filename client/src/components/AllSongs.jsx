@@ -45,50 +45,54 @@ export default function AllSongs(){
 
     return (
         <div>
-            <h1>Downloaded Songs</h1>
-            <p>Total Songs: {totalSongs}</p>
-            
-            <input
-                type="text"
-                placeholder="Filter by title"
-                value={inputFilter}
-                onChange={(e) => {
-                    setInputFilter(e.target.value);
-                }}
-            />
+            <div className="all">
+                <h1>Downloaded Songs</h1>
                 
-            <div>
-                <label>Sort by:</label>
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                    <option value="downloadedAt">Date</option>
-                    <option value="duration">Duration</option>
-                </select>
+                <input
+                    type="text"
+                    placeholder="Filter by title"
+                    value={inputFilter}
+                    onChange={(e) => {
+                        setInputFilter(e.target.value);
+                    }}
+                />
 
-                <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
-                    {sortOrder.toUpperCase()}
-                </button>
-            </div>
-            <table> 
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Title</th>
-                        <th>Duration</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {songs.map(song => (
-                        <tr key={song._id}>
-                            <td>{song.videoId}</td>
-                            <td>{song.title}</td>
-                            <td>{song.duration}</td>
-                            <td>{song.downloadedAt}</td>
+                <div className="top-bar">
+                    <p>Total Songs: {totalSongs}</p> 
+                    <div className="sort-section">
+                        <label>Sort by:</label>
+                        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                            <option value="downloadedAt">Date</option>
+                            <option value="duration">Duration</option>
+                        </select>
+
+                        <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                            {sortOrder.toUpperCase()}
+                        </button>
+                    </div>
+                </div>
+                <table> 
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Duration</th>
+                            <th>Date</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-            
+                    </thead>
+                    <tbody>
+                        {songs.map(song => (
+                            <tr key={song._id}>
+                                <td>{song.videoId}</td>
+                                <td>{song.title}</td>
+                                <td>{song.duration}</td>
+                                <td>{song.downloadedAt}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
             <ReactPaginate
                 breakLabel="..."
                 nextLabel="next >"

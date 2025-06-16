@@ -12,16 +12,8 @@
     }
 }
 
-.url-form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    max-width: 600px;
-    margin-bottom: 16px;
-
-    input[type="text"] {
-        width: 60%;
+%text-input-file{
+    width: 60%;
         margin: 12px;
         padding: 8px;
         font-size: $url-font-size;
@@ -33,6 +25,18 @@
             outline: none;
             border-color: $font-hover-color;
         }
+}
+
+.url-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
+    margin-bottom: 16px;
+
+    input[type="text"] {
+        @extend %text-input-file;
     }
 
     .submit-button {

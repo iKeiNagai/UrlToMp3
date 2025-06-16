@@ -1,4 +1,72 @@
 @use 'app' as *;
+@use 'urltomp3';
+
+.all{
+
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+
+    input[type="text"]{
+        @extend %text-input-file;
+        max-width: 600px;
+
+        &::placeholder{
+            text-align: center;
+        }
+    }
+
+    .top-bar{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        font-size: 14px;
+
+        p{
+            margin-right: 95px;
+            font-weight: bold;
+        }
+
+        .sort-section{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            select, button {
+                padding: 2px;
+                border-radius: 5px;
+                border: 1px solid $font-color;
+                cursor: pointer;
+            }
+        }
+    }
+
+    table{
+        margin: 0;
+        margin-top: 5px;
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid $font-color;
+            font-size: 14px;
+            text-transform: lowercase;
+        }
+
+        th{
+            background-color: rgb(170, 115, 221);
+            text-transform: uppercase;
+        }
+
+        tr:hover {
+            background-color: rgb(196, 172, 218);
+        }
+    }
+}
 
 .pagination{
     display:flex;
