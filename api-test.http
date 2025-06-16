@@ -1,0 +1,25 @@
+###API Test for URL TO MP3 
+###(Using REST Client Extension for VSCode)
+
+###Convert a YouTube video to MP3
+POST http://localhost:3001/convert
+Content-Type: application/json
+
+{
+  "url": "https://www.youtube.com/watch?v=VIDEO_ID",
+}
+
+###Save song metadata to db
+POST http://localhost:3001/save-song
+Content-Type: application/json
+
+{
+  "url": "https://www.youtube.com/watch?v=VIDEO_ID",
+  "title": "sanitized-song-title"
+}
+
+###Download the saved song
+GET http://localhost:3001/download/sanitized-song-title.mp3
+
+###Get all saved songs pagination/sortby/sortorder/filter
+GET http://localhost:3001/all-songs?page='1'&sortBy=duration&sortOrder=asc&filter=o
