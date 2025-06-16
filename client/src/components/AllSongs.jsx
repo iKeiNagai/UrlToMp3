@@ -85,8 +85,8 @@ export default function AllSongs(){
                             <tr key={song._id}>
                                 <td>{song.videoId}</td>
                                 <td>{song.title}</td>
-                                <td>{song.duration}</td>
-                                <td>{song.downloadedAt}</td>
+                                <td>{Math.floor(song.duration / 60)}:{(song.duration % 60).toString().padStart(2, '0')}</td>
+                                <td>{new Date(song.downloadedAt).toLocaleString()}</td>
                             </tr>
                         ))}
                     </tbody>
